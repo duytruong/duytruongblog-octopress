@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: 
+
+Sitemap: http://duytruong.github.io/sitemap.xml 
