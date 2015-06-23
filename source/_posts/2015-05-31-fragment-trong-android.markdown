@@ -159,3 +159,29 @@ public class SkeletonFragment extends Fragment {
 	}
 }
 ```
+
+## Các lifecycle event đặc trưng của Fragment ##
+
+# Gắn vào và tách ra khỏi Activity (attaching và detaching) #
+
+Toàn bộ thời gian sống của Fragment được tính từ khi nó bắt đầu gắn vào Activity (`onAttach` được gọi) và kết thúc khi tách ra khỏi Activity (`onDetach` được gọi).
+Lưu ý:
+
+* Khi Fragment/Activity ở trạng thái paused, `onDetach` có thể không được gọi do tiến trình của Activity đã bị kết thúc giữa chừng trong khi Fragment/Activity vẫn chưa hoàn thành toàn bộ lifecycle của nó.
+
+* `onAttach` được gọi trước khi UI của Fragment được tạo ra, trước cả Fragment hoặc Activity hoàn tất quá trình khởi tạo của chúng.
+
+# Tạo và hủy Fragment (creating và destroying) #
+
+Giai đoạn tạo lập của Fragment (created lifetime) nằm giữa lần gọi đầu tiên tới `onCreate` và lần gọi cuối cùng tới `onDestroy`.
+`onDestroy` cũng có thể không được gọi khi tiến trình của Activity bị ngưng đột ngột. Do đó việc thu hồi tài nguyên có thể không được thực hiện nếu ta chỉ phụ thuộc vào `onDestroy`
+
+Các công việc khởi tạo Fragment nên được làm trong `onCreate`. Nếu bạn muốn tạo ra các đối tượng có phạm vi trong toàn bộ class (class scoped object) thì nên làm ở đây vì
+`onCreate` chỉ được gọi một lần duy nhất trong vòng đời của Fragment.
+
+# Tạo và hủy giao diện #
+
+Giao diện của một Fragment được khởi tạo và hủy khi `onCreateView` và `onDestroyView` được gọi tương ứng.
+Nếu Fragment muốn tương tác giao diện của Activity chứa nó, bạn phải đợi `onActivityCreated` được gọi, lúc đó Activity đã được khởi tạo hoàn tất và toàn bộ giao diện của nó đã được tạo xong.
+
+## Tìm hiểu về Fragment Manager ##
